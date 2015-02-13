@@ -1,7 +1,9 @@
-
-CPPFLAGS=-DHAS_BLKID
-CFLAGS=-O3 -Wall
-LDLIBS=-lblkid
+TC=$(HOME)/tc
+CC=$(TC)/bin/arm-linux-androideabi-gcc
+#CPPFLAGS=-DHAS_BLKID
+CFLAGS=-O3 -Wall --sysroot=$(TC)/sysroot/
+#LDLIBS=-lblkid
+LDFLAGS=--sysroot=$(TC)/sysroot/ -lc -static
 
 all: abootimg
 
@@ -15,6 +17,8 @@ version.h:
 	fi
 
 abootimg.o: bootimg.h version.h
+
+abootimg: abootimg.o getline.o fmemopen.o fopencookie.o open_memstream.o
 
 clean:
 	rm -f abootimg *.o version.h
